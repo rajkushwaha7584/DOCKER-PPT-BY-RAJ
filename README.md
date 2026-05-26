@@ -1,26 +1,23 @@
-# Docker Presentation by Raj
+# Docker Complete Presentation by Raj
 
-This repository contains a complete Docker presentation created for learning, interview preparation, and DevOps understanding.
-
-The goal of this project is to explain Docker in a simple and practical way, including Docker basics, containers, images, Dockerfile, Docker Compose, networking, volumes, registry, monitoring, and commonly used Docker commands.
+This repository contains a complete Docker presentation prepared for learning, revision, and interview preparation.  
+It explains Docker concepts in simple English with examples, commands, and real-world DevOps use cases.
 
 ---
 
-## About Docker
+## About This Presentation
 
-Docker is a containerization platform used to package an application with all its required dependencies, libraries, and runtime.
+Docker is one of the most important tools in DevOps.  
+It helps developers and DevOps engineers package applications with all required dependencies and run them in isolated containers.
 
-It helps developers run applications in the same environment everywhere.
-
-Docker solves the common problem:
-
-> "It works on my machine, but not on the server."
+This presentation covers Docker from basic to advanced level in a simple and practical way.
 
 ---
 
 ## Topics Covered
 
 - What is Docker?
+- Why Docker is used
 - Docker vs Virtual Machine
 - Docker Architecture
 - Docker Engine
@@ -28,14 +25,37 @@ Docker solves the common problem:
 - Docker Container
 - Dockerfile
 - ENTRYPOINT vs CMD
+- Docker build and run commands
 - Multi-stage Dockerfile
 - Docker Compose
-- Docker Networks
-- Docker Volumes
+- Docker Network
+- Docker Volume
 - Docker Registry
+- Docker Hub
 - Docker Monitoring and Logs
 - Docker Scout
-- Important Docker Commands
+- Useful Docker commands
+- Docker installation on Linux
+- Real-world Java application example
+
+---
+
+## Docker Definition
+
+Docker is a platform used to build, package, and run applications inside containers.
+
+A container includes the application code, dependencies, libraries, and runtime required to run the application.
+
+---
+
+## Why Docker is Used
+
+Docker is used to solve the common problem:
+
+> "It works on my machine, but not on the server."
+
+With Docker, the application runs in the same environment everywhere:
+developer laptop, testing server, production server, or cloud.
 
 ---
 
@@ -49,50 +69,44 @@ Docker solves the common problem:
 | Performance | Faster and efficient | Slower compared to containers |
 | Resource Usage | Uses less CPU and RAM | Uses more CPU and RAM |
 | Isolation | Process-level isolation | Full machine-level isolation |
-| Use Case | App deployment, microservices, CI/CD | Running different OS and full server setup |
+| Portability | Easy to move across systems | Less portable because of full OS |
+| Best Use Case | App deployment, microservices, CI/CD | Running different OS and full server setup |
 
 ---
 
 ## Docker Architecture
 
+Docker architecture mainly contains:
+
 | Component | Simple Explanation |
 |---|---|
-| Docker Client | Used to run Docker commands like `docker build`, `docker run`, and `docker ps`. |
-| Docker Daemon | Runs in the background and manages images, containers, networks, and volumes. |
-| Docker Image | A read-only template that contains app code, dependencies, and runtime. |
-| Docker Container | A running instance of a Docker image. |
-| Docker Registry | A place where Docker images are stored and managed. |
+| Docker Client | Tool used to run Docker commands like `docker build`, `docker run`, and `docker ps`. |
+| Docker Daemon | Background service that builds images, runs containers, and manages Docker resources. |
+| Docker Image | Read-only template that contains application code, dependencies, and runtime. |
+| Docker Container | Running version of a Docker image. |
+| Docker Registry | Storage place where Docker images are stored and managed. |
 | Docker Hub | Public Docker registry where ready-made images are available. |
 
 ---
 
 ## Docker Engine
 
-Docker Engine is the core software of Docker.
-
-It is responsible for building images, running containers, and managing Docker resources like networks and volumes.
+Docker Engine is the core software of Docker.  
+It builds images, runs containers, and manages Docker resources like networks and volumes.
 
 Main parts of Docker Engine:
 
 | Part | Explanation |
 |---|---|
-| Docker CLI | Command-line tool used by the user |
-| Docker Daemon | Background service that manages Docker objects |
+| Docker CLI | Command line tool used by users |
+| Docker Daemon | Background service that manages Docker |
 | REST API | Helps CLI communicate with Docker Daemon |
 
 ---
 
 ## Docker Image
 
-A Docker Image is a read-only package that contains everything needed to run an application.
-
-It includes:
-
-- Application code
-- Libraries
-- Dependencies
-- Runtime
-- Configuration
+A Docker image is a read-only template that contains application code, libraries, dependencies, and runtime.
 
 Example:
 
