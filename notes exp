@@ -1,0 +1,244 @@
+Docker Container
+
+A Docker container is the running version of a Docker image.
+
+Example:
+
+docker run -d -p 8080:80 nginx
+
+This command runs an Nginx container in the background.
+
+Dockerfile for Java Application
+FROM eclipse-temurin:17-jdk-alpine
+
+WORKDIR /app
+
+COPY target/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+Explanation
+Line	Explanation
+FROM eclipse-temurin:17-jdk-alpine	Provides Java 17 base image
+WORKDIR /app	Sets working directory inside container
+COPY target/*.jar app.jar	Copies Java JAR file into container
+EXPOSE 8080	Shows that app runs on port 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]	Starts the Java application
+ENTRYPOINT vs CMD
+Point	ENTRYPOINT	CMD
+Meaning	Fixed main command of container	Default command or default arguments
+Use	Used when container should always run one command	Used when default command can be changed
+Override	Not easily changed	Easily changed
+Example	ENTRYPOINT ["java", "-jar", "app.jar"]	CMD ["--server.port=8080"]
+Multi-stage Dockerfile for Java
+# Stage 1: Build the application
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# Stage 2: Run the application
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+Why Multi-stage Dockerfile is Used
+Reason	Explanation
+Smaller image size	Final image contains only required runtime and JAR file
+Cleaner image	Source code and Maven cache are not included
+Better security	Fewer tools and files reduce security risk
+Faster deployment	Small image is faster to push and pull
+Production ready	Commonly used in real DevOps projects
+Docker Compose
+
+Docker Compose is a tool used to run and manage multiple containers together using one YAML file.
+
+Example services:
+
+Service	Work
+Java Backend	Runs Spring Boot application
+MySQL Database	Stores application data
+Network	Connects containers
+Volume	Stores database data permanently
+Docker Compose Example for Java and MySQL
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: java_app_db
+      MYSQL_USER: raj
+      MYSQL_PASSWORD: raj123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  java-app:
+    build: .
+    container_name: java-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/java_app_db
+      SPRING_DATASOURCE_USERNAME: raj
+      SPRING_DATASOURCE_PASSWORD: raj123
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
+Docker Network
+
+Docker Network is used to allow containers to communicate with each other.
+
+Example:
+
+A Java backend container can connect to a MySQL container using Docker network.
+
+Docker Network Types
+Network Type	Explanation
+Bridge	Default network for containers on a single Docker host
+Host	Container directly uses host machine network
+None	Container has no network access
+Overlay	Used for multi-host networking in Docker Swarm
+Macvlan	Gives container its own IP address like a real device
+Docker Volume
+
+Docker Volume is used to store container data permanently.
+
+It is mainly used for databases like MySQL, MongoDB, and PostgreSQL.
+
+Example:
+
+docker volume create mysql_data
+docker run -d \
+  --name mysql-db \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -v mysql_data:/var/lib/mysql \
+  mysql:8
+Docker Registry
+
+Docker Registry is a storage place where Docker images are stored, uploaded, and downloaded.
+
+Common registries:
+
+Registry	Use
+Docker Hub	Public registry for Docker images
+Amazon ECR	AWS private container registry
+GitHub Container Registry	GitHub registry for images
+Harbor	Private enterprise registry
+Docker Monitoring and Logs
+
+Docker monitoring means checking container health, CPU, memory, network, and running status.
+
+Docker logs are used to check application output and errors.
+
+Command	Use
+docker logs container-name	Shows container logs
+docker logs -f container-name	Shows live logs
+docker stats	Shows live CPU and memory usage
+docker inspect container-name	Shows detailed container information
+docker events	Shows real-time Docker events
+Docker Scout
+
+Docker Scout is used to check Docker images for security vulnerabilities.
+
+Example:
+
+docker scout quickview image-name
+
+For Nginx:
+
+docker scout quickview nginx:latest
+
+For Java app:
+
+docker scout quickview java-app:latest
+Docker Installation on Ubuntu Linux
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+
+Add current user to Docker group:
+
+sudo usermod -aG docker $USER
+newgrp docker
+
+Test Docker:
+
+docker run hello-world
+10 Important Docker Commands
+Command	Use
+docker --version	Checks Docker version
+docker pull nginx	Downloads image from Docker Hub
+docker images	Shows all Docker images
+docker build -t my-app .	Builds image from Dockerfile
+docker run -d -p 8080:80 --name my-container nginx	Runs container in background
+docker ps	Shows running containers
+docker ps -a	Shows all containers
+docker logs my-container	Shows container logs
+docker exec -it my-container sh	Opens shell inside container
+docker stop my-container	Stops running container
+Docker Compose, Network, and Volume Commands
+Command	Use
+docker compose up -d	Starts all Compose services in background
+docker compose up --build -d	Rebuilds images and starts services
+docker compose ps	Shows Compose containers
+docker compose logs -f	Shows live Compose logs
+docker compose down	Stops and removes Compose containers
+docker network ls	Shows all Docker networks
+docker network create my-network	Creates Docker network
+docker network inspect my-network	Shows network details
+docker volume ls	Shows all Docker volumes
+docker volume create mysql_data	Creates Docker volume
+Real-world DevOps Use Case
+
+Docker is commonly used in CI/CD pipelines.
+
+Flow:
+
+Code Push
+   ↓
+GitHub Actions / Jenkins
+   ↓
+Docker Image Build
+   ↓
+Push Image to Docker Hub / ECR
+   ↓
+Deploy Container on Server / Kubernetes
+Conclusion
+
+Docker helps in building, packaging, and running applications in a consistent environment.
+
+It makes deployment faster, easier, and more reliable.
+
+Docker is widely used in DevOps, cloud deployment, microservices, and CI/CD pipelines.
+
+Author
+
+Raj Kushwaha
+
+GitHub: rajkushwaha7584
+
+Repository Purpose
+
+This repository is created for Docker learning and presentation preparation.
+It can also be used for interview revision and DevOps practice.
